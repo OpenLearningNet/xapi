@@ -1,0 +1,32 @@
+{
+  "name": "@cs101/xapi",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/OpenLearningNet/xapi.git"
+  },
+  "author": "David Collien <david@openlearning.com>",
+  "license": "MIT",
+  "description": "xAPI Library for OpenLearning Widgets",
+  "bugs": {
+    "url": "https://github.com/OpenLearningNet/xapi/issues"
+  },
+  "homepage": "https://github.com/OpenLearningNet/xapi#readme",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "tincan": "^0.2.1"
+  },
+  "files": [
+    "dist"
+  ]
+}
