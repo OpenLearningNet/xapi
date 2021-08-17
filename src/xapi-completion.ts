@@ -1,26 +1,22 @@
-import TinCan from "tincanjs/build/tincan";
-import { saveStatement, XApiConfig } from "./xapi-interface";
+import { JsonSerializable, XApiStatement } from "./statement";
+import { XApiConfig } from "./xapi-interface";
 
 const ADL_VERBS_ROOT = "http://adlnet.gov/expapi/verbs/";
 const OL_EXTENSIONS_ROOT = "https://xapi.openlearning.com/extensions/";
 
-type primitive = null | boolean | number | string;
-
-interface SubmissionData {
-  [key: string]: primitive | SubmissionData;
-}
+type SubmissionData = JsonSerializable;
 
 const buildStatement = (
   config: XApiConfig,
   submission?: SubmissionData
-) => {
+): XApiStatement => {
   const ol_extensions: Record<string, SubmissionData> = {};
 
   if (submission) {
     ol_extensions[OL_EXTENSIONS_ROOT + "submission-data"] = submission;
   }
 
-  return new TinCan.Statement({
+  return {
     actor: config.actor, // the actor data sent by OpenLearning
     object: {
       id: config.activity_id, // the activity_id sent by OpenLearning
@@ -42,7 +38,7 @@ const buildStatement = (
       completion: true,
       extensions: ol_extensions,
     },
-  });
+  };
 };
 
 export const saveCompletion = (
@@ -59,5 +55,5 @@ export const saveCompletion = (
   const lrs = config.lrs;
   const statement = buildStatement(config, submission);
 
-  return saveStatement(lrs, statement);
+  return lrs.saveStatement(statement);
 };

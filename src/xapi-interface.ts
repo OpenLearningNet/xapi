@@ -1,10 +1,10 @@
-import TinCan from "tincanjs/build/tincan";
+import { Lrs } from "./lrs";
 export interface XApiConfig {
-  lrs: TinCan.LRS,
-  actor: any,
-  activity_id: string,
-  registration: string
-};
+  lrs: Lrs;
+  actor: any;
+  activity_id: string;
+  registration: string;
+}
 
 export const initLrs = () => {
   // xAPI configuration is sent in the URL query string parameters
@@ -23,9 +23,9 @@ export const initLrs = () => {
     return null;
   }
 
-  var lrs = new TinCan.LRS({
+  const lrs = new Lrs({
     endpoint: endpoint,
-    auth: auth,
+    auth: auth || "",
   });
 
   return {
@@ -34,21 +34,4 @@ export const initLrs = () => {
     activity_id: activity_id,
     registration: registration,
   };
-};
-
-export const saveStatement = (lrs: TinCan.LRS, statement: TinCan.Statement) => {
-  return new Promise(function (resolve, reject) {
-    lrs.saveStatement(statement, {
-      callback: function (error: any, xhr: XMLHttpRequest) {
-        if (error) {
-          reject({
-            error: error,
-            xhr: xhr,
-          });
-        } else {
-          resolve(xhr);
-        }
-      },
-    });
-  });
 };

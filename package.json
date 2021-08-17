@@ -1,6 +1,6 @@
 {
   "name": "@openlearning/xapi",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -23,10 +23,9 @@
   "devDependencies": {
     "typescript": "^4.2.4"
   },
-  "dependencies": {
-    "tincanjs": "^0.50.0"
-  },
+  "dependencies": {},
   "files": [
-    "dist"
+    "dist",
+    "vendor"
   ]
 }
