@@ -1,4 +1,4 @@
-declare module 'tincan' {
+declare module 'tincanjs/build/tincan' {
     declare class Statement {
         id: string | null;
         actor: any;

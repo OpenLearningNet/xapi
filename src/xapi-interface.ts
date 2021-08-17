@@ -1,5 +1,4 @@
-import TinCan from "tincan";
-
+import TinCan from "tincanjs/build/tincan";
 export interface XApiConfig {
   lrs: TinCan.LRS,
   actor: any,

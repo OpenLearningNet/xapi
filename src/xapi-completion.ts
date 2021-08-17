@@ -1,4 +1,4 @@
-import TinCan from "tincan";
+import TinCan from "tincanjs/build/tincan";
 import { saveStatement, XApiConfig } from "./xapi-interface";
 
 const ADL_VERBS_ROOT = "http://adlnet.gov/expapi/verbs/";

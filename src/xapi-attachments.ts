@@ -1,4 +1,4 @@
-import TinCan from "tincan";
+import TinCan from "tincanjs";
 import { saveStatement, XApiConfig } from "./xapi-interface";
 
 const OL_VERBS_ROOT = "https://xapi.openlearning.com/verbs/";
