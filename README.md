@@ -20,6 +20,7 @@ saveCompletion(lrsConfig, myData);
 saveAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
+  description: "A text file written by the learner",
   fileUrl: "https://www.example.com/attachment.txt"
 }], "published");
 
@@ -27,6 +28,7 @@ saveAttachments(lrsConfig, [{
 saveAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
+  description: "A text file written by the learner",
   fileUrl: "https://www.example.com/attachment.txt"
 }], "attached");
 

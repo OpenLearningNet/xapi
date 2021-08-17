@@ -17,12 +17,14 @@ export interface XApiAttachment {
   sha2?: number;
 }
 
-export const createSupportingMedia = (
+export interface SupportingMedia {
   contentType: string,
   fileUrl: string,
   display: string | Record<string, string>,
   description: string | Record<string, string>
-): XApiAttachment => {
+};
+
+export const convertMediaToAttachment = ({contentType, fileUrl, display, description}: SupportingMedia): XApiAttachment => {
   if (typeof display === "string") {
     display = {
       "en-US": display,
@@ -68,13 +70,15 @@ export const buildStatement = (
   });
 };
 
-export const saveAttachments = (config: XApiConfig, attachments: Array<XApiAttachment>, verb:OLVerbShorthand="published") => {
+export const saveAttachments = (config: XApiConfig, supportingMedia: Array<SupportingMedia>, verb:OLVerbShorthand="published") => {
   if (!config) {
     return Promise.reject({
       error: "No LRS configured in the URL.",
       xhr: null,
     });
   }
+
+  const attachments = supportingMedia.map(convertMediaToAttachment);
 
   const lrs = config.lrs;
   const statement = buildStatement(
