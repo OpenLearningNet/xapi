@@ -17,17 +17,28 @@ import {
   saveActivityState,
   retrieveActivityState
 } from "@openlearning/xapi";
+```
 
+The webpage will be loaded with query string arguments that configure the LRS connection.
+The `initLrs` function returns the configuration retrieved from the query (search) string.
+```javascript
 // on load
 const lrsConfig = initLrs();
+```
 
+Once an LRS connection is configured, this config can be used with the other functions,
+e.g. to mark this activity as completed:
+```javascript
 // mark as completed
 saveCompletion(lrsConfig);
 
 // mark as completed, saving additional (JSON serializable) data
 saveCompletion(lrsConfig, myData);
+```
 
-// publish attachments (default, optional last argument)
+Or to send file URLs to OpenLearning as attachments that can then be shared by the learner:
+```javascript
+// publish (replace) attachments (default, last argument is optional)
 saveAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
@@ -44,7 +55,7 @@ saveAttachments(lrsConfig, [{
 }], "attached");
 ```
 
-Activity State:
+Activity State can also be set and retrieved for the current user of this activity:
 
 Note, to use these, the setting: "OpenLearning LRS: Use OpenLearning to store xAPI documents and state (Experimental)"
 needs to be activated under Course Setup > Advanced.
