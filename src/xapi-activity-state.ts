@@ -26,7 +26,7 @@ export const saveActivityState = (
 export const retrieveActivityState = (
   config: XApiConfig,
   stateId: string,
-  isNullOnNotFound=false
+  defaultValue?: XApiState
 ): Promise<XApiState> => {
   if (!config) {
     return Promise.reject({
@@ -42,8 +42,8 @@ export const retrieveActivityState = (
     stateId,
     config.actor
   ).then((response) => {
-    if (isNullOnNotFound && response.status === 404) {
-      return Promise.resolve(null);
+    if (defaultValue && response.status === 404) {
+      return Promise.resolve(defaultValue);
     } else if (response.status !== 200) {
       return Promise.reject(response);
     } else {
