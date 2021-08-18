@@ -1,11 +1,22 @@
 # xApi Client Library for OpenLearning
 
+Install:
+
 ```
 npm install @openlearning/xapi --save 
 ```
 
+Usage:
+
 ```
-import { initLrs, saveStatement, saveAttachments, saveCompletion } from "@openlearning/xapi";
+import {
+  initLrs,
+  saveStatement,
+  saveAttachments,
+  saveCompletion,
+  saveActivityState,
+  retrieveActivityState
+} from "@openlearning/xapi";
 
 // on load
 const lrsConfig = initLrs();
@@ -31,5 +42,13 @@ saveAttachments(lrsConfig, [{
   description: "A text file written by the learner",
   fileUrl: "https://www.example.com/attachment.txt"
 }], "attached");
+
+// store state (for the activity and current user)
+saveActivityState(lrsConfig, stateId, state);
+
+// retrieve state (for the activity and current user)
+retrieveActivityState(lrsConfig, stateId).then((state) => {
+  console.log(state);
+});
 
 ```
