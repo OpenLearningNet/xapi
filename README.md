@@ -42,7 +42,13 @@ saveAttachments(lrsConfig, [{
   description: "A text file written by the learner",
   fileUrl: "https://www.example.com/attachment.txt"
 }], "attached");
+```
 
+Activity State:
+
+Note, to use these, the setting: "OpenLearning LRS: Use OpenLearning to store xAPI documents and state (Experimental)"
+needs to be activated under Course Setup > Advanced.
+```
 // store state (for the activity and current user)
 saveActivityState(lrsConfig, stateId, state);
 
