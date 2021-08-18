@@ -58,3 +58,35 @@ retrieveActivityState(lrsConfig, stateId).then((state) => {
 });
 
 ```
+
+## Standalone Bundle
+
+If you're not using npm (e.g. you're not building with webpack, etc.) and want to just use a `<script>` tag, using:
+
+```html
+<script src="./bundle/openlearning-xapi.js"></script">
+```
+
+will define:
+```javascript
+window.xApi = {
+  initLrs,
+  saveStatement,
+  saveAttachments,
+  saveCompletion,
+  saveActivityState,
+  retrieveActivityState
+};
+```
+
+## Development
+
+Build the `./dist` folder:
+```
+npm run build
+```
+
+Build the standalone bundle: `./bundle/openlearning-xapi.js`:
+```
+npm run bundle
+```
