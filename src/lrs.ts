@@ -1,11 +1,11 @@
-import { JsonSerializableObject, XApiStatement } from "./statement";
+import { JsonSerializable, XApiStatement } from "./statement";
 
 export interface LrsConfig {
   endpoint: string;
   auth: string;
 }
 
-export type XApiState = JsonSerializableObject;
+export type XApiState = JsonSerializable;
 
 export const VERSION = "1.0.2";
 
