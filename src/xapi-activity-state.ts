@@ -42,7 +42,7 @@ export const retrieveActivityState = (
     stateId,
     config.actor
   ).then((response) => {
-    if (defaultValue && response.status === 404) {
+    if (defaultValue !== undefined && response.status === 404) {
       return Promise.resolve(defaultValue);
     } else if (response.status !== 200) {
       return Promise.reject(response);
