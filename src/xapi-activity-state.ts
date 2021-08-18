@@ -25,8 +25,9 @@ export const saveActivityState = (
 
 export const retrieveActivityState = (
   config: XApiConfig,
-  stateId: string
-) => {
+  stateId: string,
+  isNullOnNotFound=false
+): Promise<XApiState> => {
   if (!config) {
     return Promise.reject({
       error: "No LRS configured in the URL.",
@@ -40,5 +41,13 @@ export const retrieveActivityState = (
     config.activity_id,
     stateId,
     config.actor
-  ).then((response) => response.json());
+  ).then((response) => {
+    if (isNullOnNotFound && response.status === 404) {
+      return Promise.resolve(null);
+    } else if (response.status !== 200) {
+      return Promise.reject(response);
+    } else {
+      return response.json();
+    }
+  });
 };
