@@ -6,6 +6,7 @@ const SUPPORTING_MEDIA_ATTACHMENT =
   "http://id.tincanapi.com/attachment/supporting_media";
 
 export type OLVerbShorthand = "published" | "attached";
+
 export interface SupportingMedia {
   contentType: string;
   fileUrl: string;
