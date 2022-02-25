@@ -46,6 +46,14 @@ saveAttachments(lrsConfig, [{
   fileUrl: "https://www.example.com/attachment.txt"
 }], "published");
 
+// publish (replace) attachments and specify a thumbnail URL
+saveAttachments(lrsConfig, [{
+  contentType: "text/plain",
+  display: "attachment.txt",
+  description: "A text file written by the learner",
+  fileUrl: "https://www.example.com/attachment.txt"
+}], "published", "https://www.example.com/thumbnail.png");
+
 // append attachments
 saveAttachments(lrsConfig, [{
   contentType: "text/plain",
@@ -75,7 +83,7 @@ retrieveActivityState(lrsConfig, stateId).then((state) => {
 If you're not using npm (e.g. you're not building with webpack, etc.) and want to just use a `<script>` tag, using:
 
 ```html
-<script src="./bundle/openlearning-xapi.js"></script">
+<script src="./bundle/openlearning-xapi.js"></script>
 ```
 
 will define:

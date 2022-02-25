@@ -68,7 +68,8 @@ export const buildStatement = (
 export const saveAttachments = (
   config: XApiConfig,
   supportingMedia: Array<SupportingMedia>,
-  verb: OLVerbShorthand = "published"
+  verb: OLVerbShorthand = "published",
+  thumbnailUrl?: string
 ) => {
   if (!config) {
     return Promise.reject({
@@ -78,6 +79,20 @@ export const saveAttachments = (
   }
 
   const attachments = supportingMedia.map(convertMediaToAttachment);
+
+  if (thumbnailUrl) {
+    attachments.unshift({
+      contentType: "image/png",
+      usageType: "https://xapi.openlearning.com/attachment/thumbnail",
+      fileUrl: thumbnailUrl,
+      display: {
+        "en-US": "Thumbnail Image"
+      },
+      description: {
+        "en-US": "Thumbnail Image"
+      }
+    });
+  }
 
   const lrs = config.lrs;
   const statement = buildStatement(config, attachments, verb);
