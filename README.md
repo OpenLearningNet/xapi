@@ -15,7 +15,9 @@ import {
   saveAttachments,
   saveCompletion,
   saveActivityState,
-  retrieveActivityState
+  retrieveActivityState,
+  savePassed,
+  saveFailed
 } from "@openlearning/xapi";
 ```
 
@@ -63,10 +65,23 @@ saveAttachments(lrsConfig, [{
 }], "attached");
 ```
 
+Or to set a score:
+
+```javascript
+// save a passing scaled score
+savePassed(lrsConfig, { scaled: 0.95 });
+
+// save a failing raw score
+saveFailed(lrsConfig, { min: 0, max: 10, raw: 3 })
+
+```
+
+
 Activity State can also be set and retrieved for the current user of this activity:
 
 Note, to use these, the setting: "OpenLearning LRS: Use OpenLearning to store xAPI documents and state (Experimental)"
 needs to be activated under Course Setup > Advanced.
+
 ```javascript
 // store state (for the activity and current user)
 saveActivityState(lrsConfig, stateId, state);
@@ -94,7 +109,9 @@ window.xApi = {
   saveAttachments,
   saveCompletion,
   saveActivityState,
-  retrieveActivityState
+  retrieveActivityState,
+  savePassed,
+  saveFailed
 };
 ```
 

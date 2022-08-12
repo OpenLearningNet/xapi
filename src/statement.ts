@@ -53,18 +53,20 @@ export interface XApiActivity {
   objectType: "Activity";
 }
 
+export interface XApiScore {
+  scaled?: number,
+  min?: number,
+  max?: number,
+  raw?: number
+}
+
 export interface XApiResult {
-  score?: {
-    scaled?: string;
-    raw?: string;
-    min?: string;
-    max?: string;
-  };
+  score?: XApiScore;
   success?: boolean;
   completion?: boolean;
   duration?: string;
   response?: string;
-  extensions: JsonSerializableObject;
+  extensions?: JsonSerializableObject;
 }
 
 export interface XApiAttachment {
