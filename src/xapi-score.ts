@@ -5,7 +5,7 @@ const ADL_VERBS_ROOT = "http://adlnet.gov/expapi/verbs/";
 
 const buildStatement = (
   config: XApiConfig,
-  isPassed: boolean,
+  verbName: string,
   score?: XApiScore
 ): XApiStatement => {
   const result: XApiResult = {};
@@ -13,8 +13,6 @@ const buildStatement = (
   if (score) {
     result.score = score;
   }
-
-  const verbName = (isPassed ? "passed" : "failed");
 
   return {
     actor: config.actor, // the actor data sent by OpenLearning
@@ -47,7 +45,7 @@ export const savePassed = (
   }
 
   const lrs = config.lrs;
-  const statement = buildStatement(config, true, score);
+  const statement = buildStatement(config, "passed", score);
 
   return lrs.saveStatement(statement);
 };
@@ -65,7 +63,24 @@ export const saveFailed = (
   }
 
   const lrs = config.lrs;
-  const statement = buildStatement(config, false, score);
+  const statement = buildStatement(config, "failed", score);
+
+  return lrs.saveStatement(statement);
+};
+
+export const saveScored = (
+  config: XApiConfig,
+  score: XApiScore
+) => {
+  if (!config) {
+    return Promise.reject({
+      error: "No LRS configured in the URL.",
+      xhr: null,
+    });
+  }
+
+  const lrs = config.lrs;
+  const statement = buildStatement(config, "scored", score);
 
   return lrs.saveStatement(statement);
 };

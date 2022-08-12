@@ -1,7 +1,7 @@
 export { initLrs } from "./xapi-interface";
 export { saveAttachments, SupportingMedia } from "./xapi-attachments";
 export { saveCompletion } from "./xapi-completion";
-export { savePassed, saveFailed } from "./xapi-score";
+export { savePassed, saveFailed, saveScored } from "./xapi-score";
 export {
   saveActivityState,
   retrieveActivityState,
