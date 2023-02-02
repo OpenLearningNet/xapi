@@ -49,7 +49,7 @@ export const buildStatement = (
   return {
     actor: config.actor, // the actor data sent by OpenLearning
     object: {
-      id: config.activity_id, // the activity_id sent by OpenLearning
+      id: config.activityId, // the activityId sent by OpenLearning
       objectType: "Activity",
     },
     context: {

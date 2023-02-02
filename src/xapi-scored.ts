@@ -17,7 +17,7 @@ const buildStatement = (
   return {
     actor: config.actor, // the actor data sent by OpenLearning
     object: {
-      id: config.activity_id, // the activity_id sent by OpenLearning
+      id: config.activityId, // the activityId sent by OpenLearning
       objectType: "Activity",
     },
     context: {
@@ -31,41 +31,6 @@ const buildStatement = (
     },
     result
   };
-};
-
-export const savePassed = (
-  config: XApiConfig,
-  score?: XApiScore
-) => {
-  if (!config) {
-    return Promise.reject({
-      error: "No LRS configured in the URL.",
-      xhr: null,
-    });
-  }
-
-  const lrs = config.lrs;
-  const statement = buildStatement(config, "passed", score);
-
-  return lrs.saveStatement(statement);
-};
-
-
-export const saveFailed = (
-  config: XApiConfig,
-  score?: XApiScore
-) => {
-  if (!config) {
-    return Promise.reject({
-      error: "No LRS configured in the URL.",
-      xhr: null,
-    });
-  }
-
-  const lrs = config.lrs;
-  const statement = buildStatement(config, "failed", score);
-
-  return lrs.saveStatement(statement);
 };
 
 export const saveScored = (

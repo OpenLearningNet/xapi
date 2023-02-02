@@ -16,7 +16,7 @@ export const saveActivityState = (
   const lrs = config.lrs;
 
   return lrs.saveActivityState(
-    config.activity_id,
+    config.activityId,
     stateId,
     config.actor,
     state
@@ -38,7 +38,7 @@ export const retrieveActivityState = (
   const lrs = config.lrs;
 
   return lrs.retrieveActivityState(
-    config.activity_id,
+    config.activityId,
     stateId,
     config.actor
   ).then((response) => {

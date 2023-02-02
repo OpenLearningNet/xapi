@@ -33,6 +33,8 @@ export class Lrs {
     headers.set("Authorization", this.auth);
     headers.set("X-Experience-API-Version", VERSION);
 
+    // TODO: add timestamp to statement
+
     return fetch(url, {
       method,
       headers,
