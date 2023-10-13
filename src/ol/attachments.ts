@@ -1,5 +1,5 @@
-import { XApiAttachment, XApiStatement } from "./statement";
-import { XApiConfig } from "./xapi-interface";
+import { XApiConfig } from "../xapi/config";
+import { XApiAttachment, XApiStatement } from "../xapi/statement";
 
 const OL_VERBS_ROOT = "https://xapi.openlearning.com/verbs/";
 const SUPPORTING_MEDIA_ATTACHMENT =
@@ -65,7 +65,7 @@ export const buildStatement = (
   };
 };
 
-export const saveAttachments = (
+export const sendAttachments = (
   config: XApiConfig,
   supportingMedia: Array<SupportingMedia>,
   verb: OLVerbShorthand = "published",
@@ -86,16 +86,16 @@ export const saveAttachments = (
       usageType: "https://xapi.openlearning.com/attachment/thumbnail",
       fileUrl: thumbnailUrl,
       display: {
-        "en-US": "Thumbnail Image"
+        "en-US": "Thumbnail Image",
       },
       description: {
-        "en-US": "Thumbnail Image"
-      }
+        "en-US": "Thumbnail Image",
+      },
     });
   }
 
   const lrs = config.lrs;
   const statement = buildStatement(config, attachments, verb);
 
-  return lrs.saveStatement(statement);
+  return lrs.sendStatement(statement);
 };

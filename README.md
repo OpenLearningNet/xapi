@@ -10,38 +10,60 @@ Usage:
 
 ```javascript
 import {
-  initLrs,
-  saveStatement,
-  saveAttachments,
-  saveCompletion,
+  initTinCan,
+  initCmi5,
+
   saveActivityState,
   retrieveActivityState,
-  savePassed,
-  saveFailed
+  
+  sendCompleted,
+  sendPassed,
+  sendFailed,
+  sendTerminated,
+  sendAttachments,
+
+  getDuration
 } from "@openlearning/xapi";
 ```
 
 The webpage will be loaded with query string arguments that configure the LRS connection.
-The `initLrs` function returns the configuration retrieved from the query (search) string.
+The `initCmi5` or `initTinCan` functions return the configuration loaded after the launch has initialised.
+
 ```javascript
 // on load
-const lrsConfig = initLrs();
+const lrsConfig = initCmi5();
+
+// retrieve the mastery score
+const masteryScore = lrsConfig.launchData.masteryScore;
 ```
 
 Once an LRS connection is configured, this config can be used with the other functions,
 e.g. to mark this activity as completed:
 ```javascript
 // mark as completed
-saveCompletion(lrsConfig);
+sendCompleted(lrsConfig);
 
-// mark as completed, saving additional (JSON serializable) data
-saveCompletion(lrsConfig, myData);
+// mark as passed
+sendPassed(lrsConfig);
+
+// mark as failed
+sendFailed(lrsConfig);
 ```
 
+Or to set a score:
+
+```javascript
+// send a passing scaled score
+sendPassed(lrsConfig, { scaled: 0.95 });
+
+// send a failing raw score
+sendFailed(lrsConfig, { min: 0, max: 10, raw: 3 })
+
+```
 Or to send file URLs to OpenLearning as attachments that can then be shared by the learner:
 ```javascript
 // publish (replace) attachments (default, last argument is optional)
-saveAttachments(lrsConfig, [{
+sendAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -49,7 +71,7 @@ saveAttachments(lrsConfig, [{
 }], "published");
 
 // publish (replace) attachments and specify a thumbnail URL
-saveAttachments(lrsConfig, [{
+sendAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -57,7 +79,7 @@ saveAttachments(lrsConfig, [{
 }], "published", "https://www.example.com/thumbnail.png");
 
 // append attachments
-saveAttachments(lrsConfig, [{
+sendAttachments(lrsConfig, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -65,22 +87,7 @@ saveAttachments(lrsConfig, [{
 }], "attached");
 ```
 
-Or to set a score:
-
-```javascript
-// save a passing scaled score
-savePassed(lrsConfig, { scaled: 0.95 });
-
-// save a failing raw score
-saveFailed(lrsConfig, { min: 0, max: 10, raw: 3 })
-
-```
-
-
 Activity State can also be set and retrieved for the current user of this activity:
-
-Note, to use these, the setting: "OpenLearning LRS: Use OpenLearning to store xAPI documents and state (Experimental)"
-needs to be activated under Course Setup > Advanced.
 
 ```javascript
 // store state (for the activity and current user)
@@ -95,7 +102,7 @@ retrieveActivityState(lrsConfig, stateId).then((state) => {
 
 ## Standalone Bundle
 
-If you're not using npm (e.g. you're not building with webpack, etc.) and want to just use a `<script>` tag, using:
+If you're not using npm and want to just use a `<script>` tag:
 
 ```html
 <script src="./bundle/openlearning-xapi.js"></script>
@@ -104,14 +111,19 @@ If you're not using npm (e.g. you're not building with webpack, etc.) and want t
 will define:
 ```javascript
 window.xApi = {
-  initLrs,
-  saveStatement,
-  saveAttachments,
-  saveCompletion,
+  initTinCan,
+  initCmi5,
+
   saveActivityState,
   retrieveActivityState,
-  savePassed,
-  saveFailed
+  
+  sendCompleted,
+  sendPassed,
+  sendFailed,
+  sendTerminated,
+  sendAttachments,
+
+  getDuration
 };
 ```
 

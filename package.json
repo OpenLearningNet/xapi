@@ -1,6 +1,6 @@
 {
   "name": "@openlearning/xapi",
-  "version": "0.1.9",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "author": "David Collien <david@openlearning.com>",
   "license": "MIT",
-  "description": "xAPI Library for OpenLearning Widgets",
+  "description": "xAPI and CMI5 Library for OpenLearning Widgets",
   "bugs": {
     "url": "https://github.com/OpenLearningNet/xapi/issues"
   },
