@@ -29,41 +29,42 @@ import {
 The webpage will be loaded with query string arguments that configure the LRS connection.
 The `initCmi5` or `initTinCan` functions return the configuration loaded after the launch has initialised.
 
-```javascript
-// on load
-const lrsConfig = initCmi5();
+e.g.
 
-// retrieve the mastery score
-const masteryScore = lrsConfig.launchData.masteryScore;
+```javascript
+initCmi5().then((config) => {
+  // retrieve the mastery score
+  const masteryScore = config.launchData.masteryScore;
+});
 ```
 
 Once an LRS connection is configured, this config can be used with the other functions,
 e.g. to mark this activity as completed:
 ```javascript
 // mark as completed
-sendCompleted(lrsConfig);
+sendCompleted(config);
 
 // mark as passed
-sendPassed(lrsConfig);
+sendPassed(config);
 
 // mark as failed
-sendFailed(lrsConfig);
+sendFailed(config);
 ```
 
 Or to set a score:
 
 ```javascript
 // send a passing scaled score
-sendPassed(lrsConfig, { scaled: 0.95 });
+sendPassed(config, { scaled: 0.95 });
 
 // send a failing raw score
-sendFailed(lrsConfig, { min: 0, max: 10, raw: 3 })
+sendFailed(config, { min: 0, max: 10, raw: 3 })
 
 ```
 Or to send file URLs to OpenLearning as attachments that can then be shared by the learner:
 ```javascript
 // publish (replace) attachments (default, last argument is optional)
-sendAttachments(lrsConfig, [{
+sendAttachments(config, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -71,7 +72,7 @@ sendAttachments(lrsConfig, [{
 }], "published");
 
 // publish (replace) attachments and specify a thumbnail URL
-sendAttachments(lrsConfig, [{
+sendAttachments(config, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -79,7 +80,7 @@ sendAttachments(lrsConfig, [{
 }], "published", "https://www.example.com/thumbnail.png");
 
 // append attachments
-sendAttachments(lrsConfig, [{
+sendAttachments(config, [{
   contentType: "text/plain",
   display: "attachment.txt",
   description: "A text file written by the learner",
@@ -91,10 +92,10 @@ Activity State can also be set and retrieved for the current user of this activi
 
 ```javascript
 // store state (for the activity and current user)
-saveActivityState(lrsConfig, stateId, state);
+saveActivityState(config, stateId, state);
 
 // retrieve state (for the activity and current user)
-retrieveActivityState(lrsConfig, stateId).then((state) => {
+retrieveActivityState(config, stateId).then((state) => {
   console.log(state);
 });
 

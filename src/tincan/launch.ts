@@ -1,7 +1,7 @@
 import { XApiConfig } from "../xapi/config";
 import { Lrs } from "../xapi/lrs";
 
-export const initTinCan = (): XApiConfig | null => {
+export const initTinCan = async (): Promise<XApiConfig> => {
   // xAPI configuration is sent in the URL query string parameters
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -15,7 +15,7 @@ export const initTinCan = (): XApiConfig | null => {
   const registration = urlParams.get("registration") || undefined;
 
   if (!endpoint || !activityId) {
-    return null;
+    throw new Error("Invalid query parameters for Tin Can init");
   }
 
   const lrs = new Lrs({
