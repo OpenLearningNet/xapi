@@ -10,4 +10,5 @@ export interface XApiConfig {
   initTimeSeconds?: number;
   isCmi5: boolean;
   launchData?: Cmi5LaunchData;
+  automaticTermination?: boolean;
 }

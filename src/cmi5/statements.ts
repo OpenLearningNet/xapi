@@ -121,14 +121,14 @@ export const buildCmi5Statement = (
   return statement;
 };
 
-const sendStatement = (config: XApiConfig, statement: XApiStatement) => {
+const sendStatement = (config: XApiConfig, statement: XApiStatement, keepalive = false) => {
   if (!config) {
     return Promise.reject({
       error: "No LRS configured in the URL.",
       xhr: null,
     });
   }
-  return config.lrs.sendStatement(statement);
+  return config.lrs.sendStatement(statement, keepalive);
 };
 
 export const getDuration = (config: XApiConfig) => {
@@ -177,6 +177,7 @@ export const sendFailed = (config: XApiConfig, score?: XApiScore) => {
 export const sendTerminated = (config: XApiConfig) => {
   return sendStatement(
     config,
-    buildCmi5Statement(config, "terminated", { duration: getDuration(config) })
+    buildCmi5Statement(config, "terminated", { duration: getDuration(config) }),
+    true // keep alive even after the window is closed
   );
 };

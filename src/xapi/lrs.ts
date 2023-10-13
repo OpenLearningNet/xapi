@@ -24,7 +24,7 @@ export class Lrs {
     this.auth = config.auth;
   }
 
-  sendStatement(statement: XApiStatement) {
+  sendStatement(statement: XApiStatement, keepalive = false) {
     const url = this.endpoint + "statements";
     const method = "PUT";
 
@@ -41,6 +41,7 @@ export class Lrs {
       credentials: "include",
       mode: "cors",
       body: JSON.stringify(statement),
+      keepalive,
     });
   }
 

@@ -4,7 +4,7 @@
 
 import { XApiConfig } from "../xapi/config";
 import { Lrs } from "../xapi/lrs";
-import { buildCmi5Statement } from "./statements";
+import { buildCmi5Statement, sendTerminated } from "./statements";
 
 export const initCmi5 = async (): Promise<XApiConfig> => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -47,6 +47,7 @@ export const initCmi5 = async (): Promise<XApiConfig> => {
     registration,
     initTimeSeconds: Date.now() / 1000,
     isCmi5: true,
+    automaticTermination: true
   };
 
   const previousStateResponse = await lrs.retrieveActivityState(
@@ -58,6 +59,12 @@ export const initCmi5 = async (): Promise<XApiConfig> => {
   config.launchData = await previousStateResponse.json();
 
   await lrs.sendStatement(buildCmi5Statement(config, "initialized"));
+
+  document.addEventListener("beforeunload", async () => {
+    if (config.automaticTermination) {
+      await sendTerminated(config);
+    }
+  });
 
   return config;
 };
