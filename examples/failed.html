@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CMI5 Failed Example</title>
+    <script src="../bundle/openlearning-xapi.js"></script>
+  </head>
+  <body>
+    <button id="submit-button" type="button">Set as Failed</button>
+    <input id="score" type="number" min="0" max="1" value="0" step="0.1" />
+    <script>
+      // Init LRS
+      xApi.initCmi5().then((config) => {
+        // Find the submit button
+        var submitButton = document.getElementById("submit-button");
+        var scoreInput = document.getElementById("score");
+
+        submitButton.addEventListener("click", function () {
+          // Disable the submit button
+          submitButton.disabled = true;
+          scoreInput.disabled = true;
+          var score;
+          if (scoreInput.value) {
+            score = {
+              scaled: parseFloat(scoreInput.value),
+            };
+          }
+
+          xApi
+            .sendFailed(config, score)
+            .then(function () {
+              // Show the status box
+              submitButton.disabled = false;
+              scoreInput.disabled = false;
+            })
+            .catch(function (error) {
+              alert("Error: Unable to set completion.");
+              console.log(error);
+              submitButton.disabled = false;
+              scoreInput.disabled = false;
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

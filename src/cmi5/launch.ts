@@ -37,7 +37,7 @@ export const initCmi5 = async (): Promise<XApiConfig> => {
 
   const lrs = new Lrs({
     endpoint: endpoint,
-    auth: auth || "",
+    auth: `Basic ${auth}`,
   });
 
   const config: XApiConfig = {
@@ -60,7 +60,7 @@ export const initCmi5 = async (): Promise<XApiConfig> => {
 
   await lrs.sendStatement(buildCmi5Statement(config, "initialized"));
 
-  document.addEventListener("beforeunload", async () => {
+  window.addEventListener("beforeunload", async () => {
     if (config.automaticTermination) {
       await sendTerminated(config);
     }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CMI5 Passed Example</title>
+    <script src="../bundle/openlearning-xapi.js"></script>
+  </head>
+  <body>
+    <button id="passed-button" type="button">Set as Passed</button>
+    <input id="score" type="number" min="0" max="1" value="0" step="0.1" />
+    <button id="completed-button" type="button" hidden>Set as Completed</button>
+    <script>
+      // Init LRS
+      xApi.initCmi5().then((config) => {
+        // Find the buttons
+        var passedButton = document.getElementById("passed-button");
+        var scoreInput = document.getElementById("score");
+        var completedButton = document.getElementById("completed-button");
+
+        passedButton.addEventListener("click", function () {
+          // disable and hide the passed button
+          passedButton.disabled = true;
+          scoreInput.disabled = true;
+          passedButton.hidden = true
+          scoreInput.hidden = true;
+          var score;
+          if (scoreInput.value) {
+            score = {
+              scaled: parseFloat(scoreInput.value),
+            };
+          }
+
+          xApi
+            .sendPassed(config, score)
+            .then(function () {
+              // Show the completed button
+              completedButton.hidden = false;
+            })
+            .catch(function (error) {
+              alert("Error: Unable to set passed.");
+              console.log(error);
+              passedButton.disabled = false;
+              scoreInput.disabled = false;
+            });
+        });
+
+
+        completedButton.addEventListener("click", function () {
+          // Disable the completed button
+          completedButton.disabled = true;
+          xApi
+            .sendCompleted(config)
+            .then(function () {
+                // finished
+            })
+            .catch(function (error) {
+              alert("Error: Unable to set completed.");
+              console.log(error);
+              completedButton.disabled = false;
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
