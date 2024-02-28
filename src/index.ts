@@ -1,8 +1,17 @@
-export { initLrs } from "./xapi-interface";
-export { saveAttachments, SupportingMedia } from "./xapi-attachments";
-export { saveCompletion } from "./xapi-completion";
-export { savePassed, saveFailed, saveScored } from "./xapi-score";
+export { sendAttachments, SupportingMedia } from "./ol/attachments";
+export { sendTinCanCompleted, sendTinCanScored } from "./tincan/statements";
+export { initCmi5 } from "./cmi5/launch";
+export { initTinCan } from "./tincan/launch";
+
+export {
+  sendCompleted,
+  sendPassed,
+  sendFailed,
+  sendTerminated,
+  getDuration,
+} from "./cmi5/statements";
+
 export {
   saveActivityState,
   retrieveActivityState,
-} from "./xapi-activity-state";
+} from "./state/activityState";

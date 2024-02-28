@@ -1,3 +1,7 @@
+/**
+ * Types for xAPI statements
+ */
+
 export type JsonPrimitive = null | boolean | number | string;
 
 export interface JsonSerializableObject {
@@ -54,10 +58,10 @@ export interface XApiActivity {
 }
 
 export interface XApiScore {
-  scaled?: number,
-  min?: number,
-  max?: number,
-  raw?: number
+  scaled?: number;
+  min?: number;
+  max?: number;
+  raw?: number;
 }
 
 export interface XApiResult {
@@ -91,8 +95,17 @@ export interface XApiStatement {
   actor: XApiActor;
   verb: XApiVerb;
   object: XApiObject;
-  context?: JsonSerializableObject;
+  context?: XApiContext;
   result?: XApiResult;
   timestamp?: string;
   attachments?: Array<XApiAttachment>;
+}
+
+export interface XApiContext {
+  registration?: string;
+  contextActivities?: {
+    category?: Array<XApiObject>;
+    grouping?: Array<XApiObject>;
+  };
+  extensions?: Record<string, string | number>;
 }

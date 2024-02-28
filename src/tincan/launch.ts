@@ -1,12 +1,7 @@
-import { Lrs } from "./lrs";
-export interface XApiConfig {
-  lrs: Lrs;
-  actor: any;
-  activity_id: string;
-  registration: string;
-}
+import { XApiConfig } from "../xapi/config";
+import { Lrs } from "../xapi/lrs";
 
-export const initLrs = () => {
+export const initTinCan = async (): Promise<XApiConfig> => {
   // xAPI configuration is sent in the URL query string parameters
   const urlParams = new URLSearchParams(window.location.search);
 
@@ -16,11 +11,11 @@ export const initLrs = () => {
   const actorJson = urlParams.get("actor");
   const actor = JSON.parse(actorJson || "{}"); // this needs to be JSON decoded
 
-  const activity_id = urlParams.get("activity_id");
-  const registration = urlParams.get("registration");
+  const activityId = urlParams.get("activity_id");
+  const registration = urlParams.get("registration") || undefined;
 
-  if (!endpoint) {
-    return null;
+  if (!endpoint || !activityId) {
+    throw new Error("Invalid query parameters for Tin Can init");
   }
 
   const lrs = new Lrs({
@@ -29,9 +24,10 @@ export const initLrs = () => {
   });
 
   return {
-    lrs: lrs,
-    actor: actor,
-    activity_id: activity_id,
-    registration: registration,
+    lrs,
+    actor,
+    activityId,
+    registration,
+    isCmi5: false,
   };
 };

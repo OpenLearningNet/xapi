@@ -1,4 +1,4 @@
-import { JsonSerializable, XApiStatement } from "./statement";
+import { JsonSerializable, XApiActor, XApiStatement } from "./statement";
 
 export interface LrsConfig {
   endpoint: string;
@@ -24,7 +24,7 @@ export class Lrs {
     this.auth = config.auth;
   }
 
-  saveStatement(statement: XApiStatement) {
+  sendStatement(statement: XApiStatement, keepalive = false) {
     const url = this.endpoint + "statements";
     const method = "PUT";
 
@@ -33,22 +33,35 @@ export class Lrs {
     headers.set("Authorization", this.auth);
     headers.set("X-Experience-API-Version", VERSION);
 
+    statement.timestamp = new Date().toISOString();
+
     return fetch(url, {
       method,
       headers,
       credentials: "include",
       mode: "cors",
       body: JSON.stringify(statement),
+      keepalive,
     });
   }
 
-  saveActivityState(activityId: string, stateId: string, agent: string, state: XApiState) {
+  saveActivityState(
+    activityId: string,
+    stateId: string,
+    agent: XApiActor,
+    state: XApiState,
+    registration?: string
+  ) {
     const url = new URL(this.endpoint + "activities/state");
-    url.searchParams.set('activityId', activityId);
-    url.searchParams.set('stateId', stateId);
-    url.searchParams.set('agent', JSON.stringify(agent));
+    url.searchParams.set("activityId", activityId);
+    url.searchParams.set("stateId", stateId);
+    url.searchParams.set("agent", JSON.stringify(agent));
 
-    const method = "POST";
+    if (registration) {
+      url.searchParams.set("registration", registration);
+    }
+
+    const method = "PUT";
     const headers: HeadersInit = new Headers();
     headers.set("Content-Type", "application/json");
     headers.set("Authorization", this.auth);
@@ -59,15 +72,24 @@ export class Lrs {
       headers,
       credentials: "include",
       mode: "cors",
-      body: JSON.stringify(state)
+      body: JSON.stringify(state),
     });
   }
 
-  retrieveActivityState(activityId: string, stateId: string, agent: string) {
+  retrieveActivityState(
+    activityId: string,
+    stateId: string,
+    agent: XApiActor,
+    registration?: string
+  ) {
     const url = new URL(this.endpoint + "activities/state");
-    url.searchParams.set('activityId', activityId);
-    url.searchParams.set('stateId', stateId);
-    url.searchParams.set('agent', JSON.stringify(agent));
+    url.searchParams.set("activityId", activityId);
+    url.searchParams.set("stateId", stateId);
+    url.searchParams.set("agent", JSON.stringify(agent));
+
+    if (registration) {
+      url.searchParams.set("registration", registration);
+    }
 
     const method = "GET";
 
@@ -79,7 +101,7 @@ export class Lrs {
       method,
       headers,
       credentials: "include",
-      mode: "cors"
+      mode: "cors",
     });
   }
 }

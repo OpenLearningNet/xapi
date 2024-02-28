@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CMI5 Launch Data Viewer</title>
+    <script src="../bundle/openlearning-xapi.js"></script>
+  </head>
+  <body>
+    <textarea id="launchData" rows="30" style="width:100%"></textarea>
+    <script>
+      // Init LRS
+      xApi.initCmi5().then((config) => {
+        const launchData = config.launchData;
+        const launchDataString = JSON.stringify(launchData, null, 2);
+        document.getElementById("launchData").value = launchDataString;
+      });
+    </script>
+  </body>
+</html>
