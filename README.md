@@ -1,4 +1,8 @@
-# xApi Client Library for OpenLearning
+# xApi and CMI5 Client Library
+
+CMI5 is the successor to SCORM for using packaged course content with an LMS.
+
+This is built to be used with the OpenLearning CMI5 course widget, but also can be used for other LMSs that support CMI5 content.
 
 Install:
 
@@ -28,6 +32,8 @@ import {
 
 The webpage will be loaded with query string arguments that configure the LRS connection.
 The `initCmi5` or `initTinCan` functions return the configuration loaded after the launch has initialised.
+
+It is recommended to use CMI5 with OpenLearning. CMI5 is the standard way to use xAPI content with an LMS. The TinCan profile can be used with the "xAPI TinCan" widget, but uses a non-standard launch method (but is often used by Captivate, Articulate, and other tools).
 
 e.g.
 
