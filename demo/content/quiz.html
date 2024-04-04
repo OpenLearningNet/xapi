@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CMI5 Quiz Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+    <script src="../scripts/openlearning-xapi.js"></script>
+    <script src="../scripts/quiz.js"></script>
+  </head>
+  <body>
+    <form id="quiz-form">
+      <div id="quiz-body"></div>
+      <input type="submit" id="submit-button" value="Submit" disabled />
+    </form>
+
+    <div>
+      <p>Click this button to terminate the activity</p>
+      <button id="done-button" disabled>Done</button>
+    </div>
+
+    <script>
+      // build the quiz
+      buildQuiz("#quiz-body", "Quiz", [
+        {
+          question: "What is the capital of France?",
+          answers: ["Paris", "London", "Berlin", "Madrid"],
+        },
+        {
+          question: "What is the capital of Germany?",
+          answers: ["Paris", "London", "Berlin", "Madrid"],
+        },
+      ]);
+
+      // function to check the answers
+      // returns a score object
+      const checkAnswers = async (answers) => {
+        const correctAnswers = ["Paris", "Berlin"];
+
+        const score = {
+          scaled: 0,
+          min: 0,
+          max: correctAnswers.length,
+          raw: 0,
+        };
+
+        const maxScore = correctAnswers.length;
+
+        for (let i = 0; i < answers.length; i++) {
+          if (answers[i] === correctAnswers[i]) {
+            score.raw++;
+          }
+        }
+
+        score.scaled = score.raw / score.max;
+
+        return score;
+      };
+
+      // set everything up
+      const init = async () => {
+        let config;
+        try {
+          // initialise the cmi5 api
+          config = await xApi.initCmi5();
+        } catch (error) {
+          // use a testing api if the activity is not launched in an LMS
+          console.error(error);
+
+          const warning = document.createElement("p");
+          warning.style.color = "red";
+          warning.textContent =
+            "Testing Mode. Failed to initialise cmi5: " + error.message;
+          document.body.prepend(warning);
+
+          config = {
+            launchData: {
+              masteryScore: 0.9,
+            },
+          };
+          xApi = {
+            sendPassed: (config, score) => {
+              console.log("Passed", score);
+              return Promise.resolve();
+            },
+            sendFailed: (config, score) => {
+              console.log("Failed", score);
+              return Promise.resolve();
+            },
+            sendTerminated: (config) => {
+              console.log("Terminated");
+              return Promise.resolve();
+            },
+          };
+        }
+
+        // get the mastery score from the cmi5 launch data
+        const masteryScore = config.launchData.masteryScore;
+
+        addQuizSubmitHandler("#quiz-form", async (answers) => {
+          // check the answers and get the score
+          const score = await checkAnswers(answers);
+
+          const scoreFeedback = `Score: ${score.raw}/${score.max} (${
+            score.scaled * 100
+          }%), Required: ${masteryScore * score.max}/${score.max} (${
+            masteryScore * 100
+          }%)`;
+
+          if (score.scaled >= masteryScore) {
+            // send the passed statement to the LRS
+            await xApi.sendPassed(config, score);
+
+            alert("Passed, " + scoreFeedback);
+          } else {
+            // send the failed statement to the LRS
+            await xApi.sendFailed(config, score);
+
+            alert("Failed, " + scoreFeedback);
+          }
+        });
+
+        // enable the quiz to be submitted
+        const submitButton = document.getElementById("submit-button");
+        submitButton.disabled = false;
+
+        // add a click event listener to the done button to terminate the activity
+        const doneButton = document.getElementById("done-button");
+        doneButton.addEventListener("click", async function () {
+          doneButton.disabled = true;
+          submitButton.disabled = true;
+
+          // send the terminated statement to the LRS
+          await xApi.sendTerminated(config);
+
+          // close the window if the activity is launched in a popup
+          if (window.opener) {
+            window.close();
+          }
+        });
+      };
+
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<courseStructure xmlns="https://w3id.org/xapi/profiles/cmi5/v1/CourseStructure.xsd">
+  <course id="http://cmi5demo.example.com/identifiers/demoCmi5Course">
+    <title>
+      <langstring lang="en-US">Introduction to Geography</langstring>
+    </title>
+    <description>
+      <langstring lang="en-US">
+        This course will introduce you into the basics of geography with a quiz on capital
+        cities.
+      </langstring>
+    </description>
+  </course>
+  <au id="http://cmi5demo.example.com/identifiers/demoCmi5Course/aus/demoCmi5Au"
+    activityType="http://adlnet.gov/expapi/activities/lesson" launchMethod="AnyWindow"
+    moveOn="CompletedOrPassed" masteryScore="0.9">
+    <title>
+      <langstring lang="en-US">Geography: Capital Cities</langstring>
+    </title>
+    <description>
+      <langstring lang="en-US">
+        This is a demo quiz to test CMI5 functionality.
+      </langstring>
+    </description>
+    <url>content/quiz.html</url>
+  </au>
+</courseStructure>
